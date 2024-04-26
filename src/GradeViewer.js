@@ -50,6 +50,7 @@ function HomeworkViewer() {
             setShowModal(false);
         } else {
             setError('Please upload a PDF or DOCX file.');
+            setFile(null); // Reset file state if file type is invalid
         }
     };
     
