@@ -20,7 +20,7 @@ function HomeworkList() {
   // Function to handle logout action
   const handleLogout = () => {
     localStorage.removeItem('user'); // Remove the user session from local storage
-    navigate('/login'); // Redirect the user to the login page
+    navigate('/'); // Redirect the user to the login page
   };
 
   return (
