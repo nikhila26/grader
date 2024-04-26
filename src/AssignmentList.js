@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styles from './AssignmentList.module.css'; // Ensure this path is correct and the CSS file exists
 
 const AssignmentList = () => {
   const [selectedSubject, setSelectedSubject] = useState(null);
-  const navigate = useNavigate(); // Hook for navigation to enable redirection after logout
 
   const subjectsAssignments = {
     Math: Array.from({ length: 10 }, (_, i) => ({
