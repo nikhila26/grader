@@ -5,7 +5,10 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background: #f5f5f5;
+    background-image: url('ai-features.jpeg'); /* Add background image */
+    background-size: cover; /* Ensure the image covers the entire container */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Prevent the background image from repeating */
 }
 
 .formGroup {
