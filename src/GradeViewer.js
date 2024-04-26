@@ -1,104 +1,106 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom'; // Import useNavigate and Link for navigation
-import styles from './GradeViewer.module.css'; // Confirm the path is correct
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import styles from './HomeworkViewer.module.css'; // Make sure the path is correct
 
-// Helper functions
-export const randomGrade = () => {
-  const grades = ['A', 'B', 'C', 'D'];
-  return grades[Math.floor(Math.random() * grades.length)];
-};
+function HomeworkViewer() {
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const [homework, setHomework] = useState(null);
+    const [file, setFile] = useState(null);
+    const [gradeInfo, setGradeInfo] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+    const [error, setError] = useState('');
 
-const getCommentForGrade = (grade) => {
-  switch (grade) {
-    case 'A':
-      return 'Excellent work!';
-    case 'B':
-      return 'Good, but check your calculations.';
-    case 'C':
-      return 'Adequate, but needs improvement.';
-    case 'D':
-      return 'Insufficient, please revisit the material.';
-    default:
-      return 'No comment available.';
-  }
-};
+    useEffect(() => {
+        // Fetching homework details based on the assignment id
+        const generateAssignments = (subject, total) => {
+            let assignments = {};
+            for (let i = 1; i <= total; i++) {
+                assignments[`${subject}-${i}`] = {
+                    title: `${subject.charAt(0).toUpperCase() + subject.slice(1)} Homework ${i}`,
+                    description: `Complete the set tasks for ${subject} number ${i}.`
+                };
+            }
+            return assignments;
+        };
 
-function GradeViewer() {
-  const navigate = useNavigate();
-  const [selectedSubject, setSelectedSubject] = useState('Math');
-  const [selectedAssignment, setSelectedAssignment] = useState('');
+        const subjects = ['math', 'science', 'history', 'english', 'geography'];
+        let allAssignments = {};
+        subjects.forEach(subject => {
+            Object.assign(allAssignments, generateAssignments(subject, 10));
+        });
 
-  const subjects = ['Math', 'Science', 'History', 'English', 'Geography'];
-  const grades = subjects.reduce((acc, subject) => ({
-    ...acc,
-    [subject]: Array.from({ length: 10 }, (_, i) => ({
-      id: `${subject} Assignment ${i + 1}`,
-      grade: randomGrade(),
-    }))
-  }), {});
+        if (allAssignments[id]) {
+            setHomework(allAssignments[id]);
+        }
+    }, [id]);
 
-  const handleSubjectChange = (event) => {
-    setSelectedSubject(event.target.value);
-    setSelectedAssignment('');
-  };
+    const handleFileUpload = (e) => {
+        const uploadedFile = e.target.files[0];
+        console.log('Uploaded File:', uploadedFile);
+        console.log('File Type:', uploadedFile.type);
+    
+        const allowedTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+        console.log('Allowed Types:', allowedTypes);
+    
+        if (uploadedFile && allowedTypes.includes(uploadedFile.type)) {
+            setFile(uploadedFile);
+            setGradeInfo(null);
+            setError('');
+            setShowModal(false);
+        } else {
+            setError('Please upload a PDF or DOCX file.');
+        }
+    };
+    
 
-  const handleAssignmentChange = (event) => {
-    setSelectedAssignment(event.target.value);
-  };
+    const submitHomework = () => {
+        if (!file) {
+            setShowModal(true);
+            setGradeInfo("Please upload a file before submitting!");
+            return;
+        }
+        const grades = ['A', 'B', 'C', 'D'];
+        const assignmentNumber = parseInt(id.split('-')[1], 10);
+        const gradeIndex = assignmentNumber % grades.length;
+        const grade = grades[gradeIndex];
+        const comments = {
+            'A': 'Excellent work!',
+            'B': 'Good, but check your calculations.',
+            'C': 'Adequate, but needs improvement.',
+            'D': 'Insufficient, please revisit the material.'
+        };
+        setGradeInfo(`Grade: ${grade}, Comment: ${comments[grade]}`);
+        setShowModal(true);
+    };
 
-  const handleLogout = () => {
-    localStorage.removeItem('user');
-    navigate('/');
-  };
+    const closeModal = () => {
+        setShowModal(false);
+    };
 
-  const selectedSubjectData = grades[selectedSubject];
-  const selectedAssignmentDetails = selectedSubjectData.find(assignment => assignment.id === selectedAssignment);
+    const handleLogout = () => {
+        localStorage.removeItem('user');
+        navigate('/');
+    };
 
-  return (
-    <div className={styles.container}>
-      <nav className={styles.navBar}>
-        <Link to="/assignment-list" className={styles.navLink}>View Assignments</Link>
-        <Link to="/homework-list" className={styles.navLink}>Submit Assignments</Link>
-      </nav>
-      <h1 className={styles.title}>Grade Details</h1>
-      <div className={styles.selectContainer}>
-        <label className={styles.label}>
-          Select Subject:
-          <select className={styles.select} value={selectedSubject} onChange={handleSubjectChange}>
-            {subjects.map(subject => (
-              <option key={subject} value={subject}>{subject}</option>
-            ))}
-          </select>
-        </label>
-        <label className={styles.label}>
-          Select Assignment:
-          <select className={styles.select} value={selectedAssignment} onChange={handleAssignmentChange}>
-            <option value="">--Select an Assignment--</option>
-            {selectedSubjectData.map((assignment) => (
-              <option key={assignment.id} value={assignment.id}>{assignment.id}</option>
-            ))}
-          </select>
-        </label>
-      </div>
-      {selectedAssignmentDetails && (
-        <div className={styles.gradeDetails}>
-          <h2>{selectedAssignmentDetails.id}</h2>
-          <p className={styles.grade}>Grade: {selectedAssignmentDetails.grade}</p>
-          <p className={styles.comment}>Comment: {getCommentForGrade(selectedAssignmentDetails.grade)}</p>
+    return (
+        <div className={styles.container}>
+            <button onClick={handleLogout} className={styles.logoutButton}>Logout</button>
+            <h1 className={styles.title}>{homework?.title}</h1>
+            <p>{homework?.description}</p>
+            <label htmlFor="file-upload" className={styles.fileLabel}>File Upload</label>
+            <input id="file-upload" type="file" onChange={handleFileUpload} className={styles.input} accept=".pdf,.docx" />
+            {file && <p className={styles.fileDetails}>File uploaded: {file.name}</p>}
+            {error && <p className={styles.error}>{error}</p>}
+            <button onClick={submitHomework} className={styles.submitButton}>Submit Homework</button>
+            {showModal && (
+                <div className={styles.gradingSection}>
+                    <p>{gradeInfo}</p>
+                    <button onClick={closeModal} className={styles.button}>Close</button>
+                </div>
+            )}
         </div>
-      )}
-      <div className={styles.rubric}>
-        <h2>Grading Rubric</h2>
-        <p>A: If you answer all questions correctly</p>
-        <p>B: If you answer most questions correctly</p>
-        <p>C: If you answer some questions correctly</p>
-        <p>D: If you give wrong answers</p>
-        {/* Add more rubric criteria as needed */}
-      </div>
-      <button onClick={handleLogout} className={styles.logoutButton}>Logout</button>
-
-    </div>
-  );
+    );
 }
 
-export default GradeViewer;
+export default HomeworkViewer;
