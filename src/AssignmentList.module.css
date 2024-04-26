@@ -1,0 +1,131 @@
+/* General container for the page */
+.container {
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  width: 90%;
+  margin: 20px auto;
+}
+
+/* Title styling */
+.title {
+  text-align: center;
+  color: #333;
+}
+
+/* List of subjects */
+.subjectsList {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Individual subject item */
+.subjectItem {
+  background-color: #ffffff;
+  margin: 5px;
+  padding: 10px 15px;
+  border-radius: 4px;
+  box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+  color: #0056b3;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+/* Subject item hover state */
+.subjectItem:hover {
+  background-color: #e2e3e5;
+}
+
+/* Subject name styling */
+.subjectName {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* List of assignments within a subject */
+.assignmentsList {
+  list-style-type: none;
+  padding-left: 20px;
+}
+
+/* Individual assignment item */
+.assignmentItem {
+  padding: 5px 0;
+}
+
+/* Form for adding new assignments */
+.addForm {
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* Input and select fields within forms */
+.inputField, .selectField {
+  padding: 8px;
+  margin: 0 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+/* Button to add new assignments */
+.addButton {
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Hover effect for the add button */
+.addButton:hover {
+  background-color: #45a049;
+}
+
+/* Navigation bar styles */
+.navBar {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+  background-color: #f1f1f1;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Navigation links */
+.navLink {
+  padding: 10px 15px;
+  margin: 0 10px;
+  text-decoration: none;
+  color: #0056b3;
+  font-weight: bold;
+}
+
+/* Hover and focus effects for navigation links */
+.navLink:hover, .navLink:focus {
+  background-color: #ddd;
+  border-radius: 5px;
+}
+
+/* Logout button styling */
+.logoutButton {
+  padding: 10px 20px;
+  margin-left: 10px; /* Adjust as needed for spacing */
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+/* Logout button hover effect */
+.logoutButton:hover {
+  background-color: #c82333;
+}
