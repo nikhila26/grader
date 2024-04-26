@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './AssignmentList.module.css'; // Ensure this path is correct and the CSS file exists
 
 const AssignmentList = () => {
   const [selectedSubject, setSelectedSubject] = useState(null);
+  const navigate = useNavigate();
 
   const subjectsAssignments = {
     Math: Array.from({ length: 10 }, (_, i) => ({
@@ -52,11 +53,19 @@ const AssignmentList = () => {
     setSelectedSubject(subject);
   };
 
+  const handleLogout = () => {
+    console.log('Logout button clicked'); // Check if the logout button is being clicked
+    // Perform logout operations like clearing the user from local storage or context
+    localStorage.removeItem('user'); // Assuming 'user' is the key you use for storing user data
+    navigate('/', { replace: true }); // Redirect user to the login page without pushing to history
+  };
+
   return (
     <div className={styles.container}>
       <nav className={styles.topNav}>
         <Link to="/homework-list" className={styles.navLink}>Submit Assignments</Link>
         <Link to="/grades" className={styles.navLink}>View Grades</Link>
+        <button onClick={handleLogout} className={styles.logoutButton}>Logout</button>
       </nav>
       <h1>Assignments and Questions</h1>
       <div className={styles.subjectsContainer}>
