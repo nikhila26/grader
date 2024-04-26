@@ -87,7 +87,16 @@ function GradeViewer() {
           <p className={styles.comment}>Comment: {getCommentForGrade(selectedAssignmentDetails.grade)}</p>
         </div>
       )}
+      <div className={styles.rubric}>
+        <h2>Rubric Criteria</h2>
+        <p>A: If you answer all questions correctly</p>
+        <p>B: If you answer most questions correctly</p>
+        <p>C: If you answer some questions correctly</p>
+        <p>D: If you give wrong answers</p>
+        {/* Add more rubric criteria as needed */}
+      </div>
       <button onClick={handleLogout} className={styles.logoutButton}>Logout</button>
+
     </div>
   );
 }
