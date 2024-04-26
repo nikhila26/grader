@@ -88,7 +88,7 @@ function GradeViewer() {
         </div>
       )}
       <div className={styles.rubric}>
-        <h2>Rubric Criteria</h2>
+        <h2>Grading Rubric</h2>
         <p>A: If you answer all questions correctly</p>
         <p>B: If you answer most questions correctly</p>
         <p>C: If you answer some questions correctly</p>
